@@ -66,6 +66,8 @@ set(current_include_dir ${CMAKE_CURRENT_SOURCE_DIR}/include)
 set(current_source_dir ${CMAKE_CURRENT_SOURCE_DIR}/src)
 file(GLOB_RECURSE targets RELATIVE ${current_source_dir} *.cpp)
 
+#set(CMAKE_CXX_CLANG_TIDY clang-tidy *,-fuchsia-*,-google-*,-zircon-*,-abseil-*,-modernize-use-trailing-return-type,-llvm*,-android-*,-readability-magic-numbers,-cppcoreguidelines-avoid-magic-numbers,-readability-else-after-return,-readability-static-accessed-through-instance,-readability-avoid-const-params-in-decls,-cppcoreguidelines-non-private-member-variables-in-classes,-misc-non-private-member-variables-in-classes,-altera-struct-pack-align,-altera-unroll-loops,-altera-id-dependent-backward-branch,-readability-identifier-length,readability-identifier-naming,llvm-include-order)
+
 foreach(t ${targets})
     get_filename_component(target_path ${t} PATH)
     get_filename_component(target_name_we ${t} NAME_WE)

@@ -255,7 +255,7 @@ public:
         {
                 for (auto x : std::ranges::subrange(first, last)) {
                         add(x);
-                };
+                }
         }
 
         template<class Range>
@@ -264,7 +264,7 @@ public:
         {
                 for (auto x : rg) {
                         add(x);
-                };
+                }
         }
 
         constexpr auto insert(std::initializer_list<value_type> ilist) noexcept
@@ -413,7 +413,7 @@ public:
                 } else {
                         for (auto& block : m_data | std::views::take(num_logical_blocks)) {
                                 block = static_cast<block_type>(~block);
-                        };
+                        }
                 }
                 clear_unused_bits();
                 return *this;

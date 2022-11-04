@@ -47,8 +47,8 @@ public:
         template<class CharT, class Traits, class Allocator>
         explicit constexpr bitset(
                 std::basic_string<CharT, Traits, Allocator> const& str,
-                std::basic_string<CharT, Traits, Allocator>::size_type pos = 0,
-                std::basic_string<CharT, Traits, Allocator>::size_type n = std::basic_string<CharT, Traits, Allocator>::npos,
+                typename std::basic_string<CharT, Traits, Allocator>::size_type pos = 0,
+                typename std::basic_string<CharT, Traits, Allocator>::size_type n = std::basic_string<CharT, Traits, Allocator>::npos,
                 CharT zero = CharT('0'),
                 CharT one = CharT('1')
         ) noexcept(false)
@@ -74,7 +74,7 @@ public:
         template<class CharT>
         explicit constexpr bitset(
                 CharT const* str,
-                std::basic_string<CharT>::size_type n = std::basic_string<CharT>::npos,
+                typename std::basic_string<CharT>::size_type n = std::basic_string<CharT>::npos,
                 CharT zero = CharT('0'),
                 CharT one = CharT('1')
         ) noexcept(false)

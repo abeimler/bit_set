@@ -1,0 +1,10 @@
+{
+    "name": "xstd-bit-set",
+    "version-string": "0.1.0",
+    "dependencies": [
+      "boost-test",
+      "boost-container",
+      "boost-dynamic-bitset",
+      "range-v3"
+    ]
+  }

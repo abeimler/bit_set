@@ -142,11 +142,11 @@ struct mem_const_iterator
         template<class X>
         auto operator()(X& a) const noexcept
         {
-                using Iterator = X::iterator;
+                using Iterator = typename X::iterator;
                 static_assert(std::same_as<decltype(a.begin()), Iterator>);     // [container.reqmts]/24
                 static_assert(std::same_as<decltype(a.end())  , Iterator>);     // [container.reqmts]/27
 
-                using ReverseIterator = X::reverse_iterator;                    // [container.rev.reqmts]/4
+                using ReverseIterator = typename X::reverse_iterator;           // [container.rev.reqmts]/4
                 static_assert(std::same_as<decltype(a.rbegin()), ReverseIterator>);
                 BOOST_CHECK(a.rbegin() == std::reverse_iterator(a.end()));      // [container.rev.reqmts]/5
                                                                                 // [container.rev.reqmts]/7
@@ -157,7 +157,7 @@ struct mem_const_iterator
         template<class X>
         auto operator()(X const& a) const noexcept
         {
-                using ConstIterator = X::const_iterator;                        // [container.reqmts]/24
+                using ConstIterator = typename X::const_iterator;               // [container.reqmts]/24
                 static_assert(std::same_as<decltype(a.begin()) , ConstIterator>);
                                                                                 // [container.reqmts]/27
                 static_assert(std::same_as<decltype(a.end())   , ConstIterator>);
@@ -169,7 +169,7 @@ struct mem_const_iterator
                 BOOST_CHECK(a.cend()   == const_cast<X const&>(a).end()  );     // [container.reqmts]/34
 
 
-                using ConstReverseIterator = X::const_reverse_iterator;         // [container.rev.reqmts]/4
+                using ConstReverseIterator = typename X::const_reverse_iterator;// [container.rev.reqmts]/4
                 static_assert(std::same_as<decltype(a.rbegin()) , ConstReverseIterator>);
                 BOOST_CHECK(a.rbegin() == std::reverse_iterator(a.end()));      // [container.rev.reqmts]/5
                                                                                 // [container.rev.reqmts]/7
@@ -322,7 +322,7 @@ struct mem_emplace
 struct mem_emplace_hint
 {
         template<class X, class... Args>
-        auto operator()(X& a, X::iterator p, Args&&... args) const
+        auto operator()(X& a, typename X::iterator p, Args&&... args) const
         {                                                                       // [associative.reqmts.general]/57
                 static_assert(std::same_as<decltype(a.emplace_hint(p, std::forward<Args>(args)...)), typename X::iterator>);
                 auto r = a.emplace_hint(p, std::forward<Args>(args)...);        // [associative.reqmts.general]/58
@@ -334,7 +334,7 @@ struct mem_emplace_hint
 struct mem_insert
 {
         template<class X>
-        auto operator()(X& a, X::value_type const& t) const
+        auto operator()(X& a, typename X::value_type const& t) const
         {                                                                       // [associative.reqmts.general]/61
                 static_assert(std::same_as<decltype(a.insert(t)), std::pair<typename X::iterator, bool>>);
                                                                                 // [associative.reqmts.general]/62
@@ -345,7 +345,7 @@ struct mem_insert
         }
 
         template<class X>
-        auto operator()(X& a, X::value_type&& t) const
+        auto operator()(X& a, typename X::value_type&& t) const
         {                                                                       // [associative.reqmts.general]/61
                 static_assert(std::same_as<decltype(a.insert(t)), std::pair<typename X::iterator, bool>>);
                                                                                 // [associative.reqmts.general]/62
@@ -356,7 +356,7 @@ struct mem_insert
         }
 
         template<class X>
-        auto operator()(X& a, X::iterator p, X::value_type const& t) const
+        auto operator()(X& a, typename X::iterator p, typename X::value_type const& t) const
         {                                                                       // [associative.reqmts.general]/70
                 static_assert(std::same_as<decltype(a.insert(p, t)), typename X::iterator>);
                                                                                 // [associative.reqmts.general]/71
@@ -366,7 +366,7 @@ struct mem_insert
         }
 
         template<class X>
-        auto operator()(X& a, X::iterator p, X::value_type&& t) const
+        auto operator()(X& a, typename X::iterator p, typename X::value_type&& t) const
         {                                                                       // [associative.reqmts.general]/70
                 static_assert(std::same_as<decltype(a.insert(p, t)), typename X::iterator>);
                                                                                 // [associative.reqmts.general]/71
@@ -417,7 +417,7 @@ struct mem_insert
 struct mem_erase
 {
         template<class X>
-        auto operator()(X& a, X::key_type const& k) const
+        auto operator()(X& a, typename X::key_type const& k) const
         {                                                                       // [associative.reqmts.general]/118
                 static_assert(std::same_as<decltype(a.erase(k)), typename X::size_type>);
                 auto const erased = a.count(k);
@@ -426,7 +426,7 @@ struct mem_erase
         }
 
         template<class X>
-        auto operator()(X& a, X::const_iterator q) const
+        auto operator()(X& a, typename X::const_iterator q) const
         {                                                                       // [associative.reqmts.general]/126
                 static_assert(std::same_as<decltype(a.erase(q)), typename X::iterator>);
                 BOOST_CHECK(q != a.end());
@@ -436,7 +436,7 @@ struct mem_erase
         }
 
         template<class X>
-        auto operator()(X& a, X::const_iterator q1, X::const_iterator q2) const
+        auto operator()(X& a, typename X::const_iterator q1, typename X::const_iterator q2) const
         {                                                                       // [associative.reqmts.general]/134
                 static_assert(std::same_as<decltype(a.erase(q1, q2)), typename X::iterator>);
                 auto const expected = q2;                                       // assumes erase does not invalidate iterators
@@ -460,14 +460,14 @@ struct mem_clear
 struct mem_find
 {
         template<class X>
-        auto operator()(X& b, X::key_type const& k) const
+        auto operator()(X& b, typename X::key_type const& k) const
         {                                                                       // [associative.reqmts.general]/141
                 static_assert(std::same_as<decltype(b.find(k)), typename X::iterator>);
                 BOOST_CHECK(b.find(k) == std::ranges::find(b, k));              // [associative.reqmts.general]/142
         }
 
         template<class X>
-        auto operator()(X const& b, X::key_type const& k) const
+        auto operator()(X const& b, typename X::key_type const& k) const
         {                                                                       // [associative.reqmts.general]/141
                 static_assert(std::same_as<decltype(b.find(k)), typename X::const_iterator>);
                 BOOST_CHECK(b.find(k) == std::ranges::find(b, k));              // [associative.reqmts.general]/142
@@ -477,7 +477,7 @@ struct mem_find
 struct mem_count
 {
         template<class X>
-        auto operator()(X const& b, X::key_type const& k) const
+        auto operator()(X const& b, typename X::key_type const& k) const
         {                                                                       // [associative.reqmts.general]/147
                 static_assert(std::same_as<decltype(b.count(k)), typename X::size_type>);
                                                                                 // [associative.reqmts.general]/148
@@ -488,7 +488,7 @@ struct mem_count
 struct mem_contains
 {
         template<class X>
-        auto operator()(X const& b, X::key_type const& k) const
+        auto operator()(X const& b, typename X::key_type const& k) const
         {
                 static_assert(std::same_as<decltype(b.contains(k)), bool>);
                 BOOST_CHECK_EQUAL(b.contains(k), b.find(k) != b.end());         // [associative.reqmts.general]/154
@@ -498,7 +498,7 @@ struct mem_contains
 struct mem_lower_bound
 {
         template<class X>
-        auto operator()(X& b, X::key_type const& k) const
+        auto operator()(X& b, typename X::key_type const& k) const
         {                                                                       // [associative.reqmts.general]/157
                 static_assert(std::same_as<decltype(b.lower_bound(k)), typename X::iterator>);
                                                                                 // [associative.reqmts.general]/158
@@ -506,7 +506,7 @@ struct mem_lower_bound
         }
 
         template<class X>
-        auto operator()(X const& b, X::key_type const& k) const
+        auto operator()(X const& b, typename X::key_type const& k) const
         {                                                                       // [associative.reqmts.general]/157
                 static_assert(std::same_as<decltype(b.lower_bound(k)), typename X::const_iterator>);
                                                                                 // [associative.reqmts.general]/158
@@ -517,7 +517,7 @@ struct mem_lower_bound
 struct mem_upper_bound
 {
         template<class X>
-        auto operator()(X& b, X::key_type const& k) const
+        auto operator()(X& b, typename X::key_type const& k) const
         {                                                                       // [associative.reqmts.general]/163
                 static_assert(std::same_as<decltype(b.upper_bound(k)), typename X::iterator>);
                                                                                 // [associative.reqmts.general]/164
@@ -525,7 +525,7 @@ struct mem_upper_bound
         }
 
         template<class X>
-        auto operator()(X const& b, X::key_type const& k) const
+        auto operator()(X const& b, typename X::key_type const& k) const
         {                                                                       // [associative.reqmts.general]/163
                 static_assert(std::same_as<decltype(b.upper_bound(k)), typename X::const_iterator>);
                                                                                 // [associative.reqmts.general]/164
@@ -536,18 +536,18 @@ struct mem_upper_bound
 struct mem_equal_range
 {
         template<class X>
-        auto operator()(X& b, X::key_type const& k) const
+        auto operator()(X& b, typename X::key_type const& k) const
         {
-                using iterator = X::iterator;                                   // [associative.reqmts.general]/169
+                using iterator = typename X::iterator;                          // [associative.reqmts.general]/169
                 static_assert(std::same_as<decltype(b.equal_range(k)), std::pair<iterator, iterator>>);
                                                                                 // [associative.reqmts.general]/170
                 BOOST_CHECK(b.equal_range(k) == std::make_pair(b.lower_bound(k), b.upper_bound(k)));
         }
 
         template<class X>
-        auto operator()(X const& b, X::key_type const& k) const
+        auto operator()(X const& b, typename X::key_type const& k) const
         {
-                using const_iterator = X::const_iterator;                       // [associative.reqmts.general]/169
+                using const_iterator = typename X::const_iterator;              // [associative.reqmts.general]/169
                 static_assert(std::same_as<decltype(b.equal_range(k)), std::pair<const_iterator, const_iterator>>);
                                                                                 // [associative.reqmts.general]/170
                 BOOST_CHECK(b.equal_range(k) == std::make_pair(b.lower_bound(k), b.upper_bound(k)));
