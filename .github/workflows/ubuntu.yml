@@ -25,7 +25,6 @@ jobs:
           submodules: true
       - name: update vcpkg
         run: |
-          git submodule add https://github.com/Microsoft/vcpkg.git vcpkg
           git submodule update --remote --recursive
           git submodule foreach git pull origin master
           ./vcpkg/bootstrap-vcpkg.sh
